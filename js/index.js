@@ -1,65 +1,58 @@
-// ***************************** Vehicle Constructor
+class Vehicle {
+    constructor(brand, color, speed, fuelTankAmount) {
+        this.brand = brand;
+        this._color = color;
+        this.speed = speed;
+        this.fuelTankAmount = fuelTankAmount;
+    }
 
-function Vehicle(brand, color, speed, fuelTankAmount) {
-    this.brand = brand;
-    this._color = color;
-
-    this.speed = speed;
-    this.fuelTankAmount = fuelTankAmount;
-}
-
-Vehicle.prototype = {
     set color(value) {
-        console.log("asdasd 1");
         this._color = value;
-    },
-    get color() {
-        console.log("asdasd 2");
-        return this._color;
-    },
-};
+    };
 
-Vehicle.prototype.action = function () {
-    console.log('The vehicle ' + this.brand + ' is moving with speed ' + this.speed + ".");
+    get color() {
+        return this._color;
+    };
+
+    action() {
+        console.log('The vehicle ' + this.brand + ' is moving with speed ' + this.speed + ".");
+    };
+
+    road(getDistance, consumption) {
+
+        const averageDistance = 100;
+
+        let time = (getDistance / this.speed) * 60 + " minutes";
+        let fuelConsumption = (getDistance * consumption) / averageDistance;
+        this.fuelTankAmount -= fuelConsumption;
+
+        let data = "<p>Відстань: " + getDistance + " </p>" + "<p>Витрачений час: " + time + " </p>" + "<p>Швидкість: " + this.speed + " </p>" + "<p>Витрачене пальне: " + fuelConsumption + " </p>" + "<p>Залишилось пального: " + this.fuelTankAmount + " </p>";
+
+        orderDocument(data);
+    };
 }
 
-Vehicle.prototype.road = function (getDistance, consumption) {
+class Car extends Vehicle {
+    constructor(brand, color, speed, fuelTankAmoun) {
+        super(brand, color, speed, fuelTankAmoun);
+        Car.count += 1;
+    }
 
-    var averageDistance = 100;
+    checkSteeringWhellSide() {
+        Car.random() > 0.5 ? console.log("Left side") : console.log("Right side");
+    };
 
-    var time = (getDistance / this.speed) * 60 + " minutes";
-    var fuelConsumption = (getDistance * consumption) / averageDistance;
-    this.fuelTankAmount -= fuelConsumption;
-
-    var data = "<p>Відстань: " + getDistance + " </p>" + "<p>Витрачений час: " + time + " </p>" + "<p>Швидкість: " + this.speed + " </p>" + "<p>Витрачене пальне: " + fuelConsumption + " </p>" + "<p>Залишилось пального: " + this.fuelTankAmount + " </p>";
-
-    orderDocument(data);
+    static random() {
+        return Math.random();
+    }
 }
 
 function orderDocument(data) {
-    var block = document.getElementById("block");
+    let block = document.getElementById("block");
     block.innerHTML = data;
-}
-
-// ***************************** Car Constructor
-
-function Car(brand, color, speed, fuelTankAmoun) {
-    Vehicle.apply(this, arguments);
-    Car.count += 1;
-}
-
-Car.prototype = Object.create(Vehicle.prototype);
-Car.prototype.constuctor = Car;
-
-Car.prototype.checkSteeringWhellSide = function () {
-    Car._random() > 0.5 ? console.log("Left side") : console.log("Right side");
 }
 
 Car.count = 0;
 
-Car._random = function () {
-    return Math.random();
-}
-
-var ferrari = new Vehicle("Ferrari Enzo", "red", 100, 110);
-var bmw = new Car("BMW X5", "black", 125, 130);
+let ferrari = new Car("Ferrari Enzo", "red", 100, 110);
+let bmw = new Car("BMW X5", "black", 125, 130);
